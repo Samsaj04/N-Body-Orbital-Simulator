@@ -18,7 +18,7 @@
 
 1. Clone this repository:
    ```bash
-   git clone <https://github.com/Samsaj04/N-Body-Orbital-Simulator.git>
+   git clone https://github.com/Samsaj04/N-Body-Orbital-Simulator.git
    cd N-Body-Orbital-Simulator
    ```
 2. Install dependencies:
