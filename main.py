@@ -44,9 +44,7 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=5,
-        centered=False,
-        rel_mass=False
+        speed=5
     )
 
     viz.animate()

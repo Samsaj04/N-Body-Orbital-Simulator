@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
     
 class Visualizer:
-    def __init__(self, bodies, trajectories, follow, speed, centered, rel_mass):
+    def __init__(self, bodies, trajectories, follow, speed, centered=False, rel_mass=False):
         self.bodies = bodies
         self.trajectories = trajectories
         self.dim = len(self.bodies[0].position)
