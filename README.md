@@ -85,7 +85,6 @@ python main.py
    - Create a `Visualizer` object to plot or animate the mission:
      - `bodies`: List of bodies
      - `trajectories`: Output from `run_solution()`
-     - `dim`: 2 or 3 (for 2D or 3D)
      - `follow`: Controls the trail length (higher = longer trail)
      - `speed`: Animation speed
      - `centered`: If `True`, the plot zooms to follow the bodies; if `False`, shows the full domain
@@ -95,7 +94,6 @@ python main.py
      viz = Visualizer(
          bodies=[earth, satellite],
          trajectories=orbits,
-         dim=2,
          follow=np.inf,
          speed=5,
          centered=False,
