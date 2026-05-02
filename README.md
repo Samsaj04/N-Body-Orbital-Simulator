@@ -60,7 +60,7 @@ python main.py
      - `G`: Gravitational constant
      - `ti`: Initial time
      - `tf`: Final time
-     - `step`: Time step (affects simulation resolution)
+     - `fps`: Animation frame rate (affects simulation resolution)
      - `impulse`: List of all `Propulsion` events (optional)
    - Example:
      ```python
@@ -69,7 +69,7 @@ python main.py
          G=G,
          ti=0,
          tf=10000,
-         step=20,
+         fps=120,
          impulse=[impulse]
      )
      ```
