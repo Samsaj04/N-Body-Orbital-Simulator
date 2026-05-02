@@ -43,10 +43,11 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=10
+        speed=20
     )
 
     viz.animate()
+    viz.export_animation("hohmann_transfer.gif")
     
 if __name__ == "__main__":
     main()

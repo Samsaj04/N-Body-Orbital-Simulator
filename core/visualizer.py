@@ -143,3 +143,6 @@ class Visualizer:
         frames = range(0, len(self.trajectories[0][0]), self.speed)
         self.animation = FuncAnimation(self.plotting(), self.update, frames=frames, interval=10, blit=not self.centered)
         plt.show()
+        
+    def export_animation(self, name):
+        self.animation.save(f"assets/{name}", writer="pillow", fps=30)

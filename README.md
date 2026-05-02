@@ -108,6 +108,10 @@ python main.py
      ```python
      viz.animate()
      ```
+   - To export animation:
+     ```python
+     viz.export_animation("file_name.gif")
+     ```
 
 ## Support & Documentation
 
