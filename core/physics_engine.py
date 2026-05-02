@@ -34,12 +34,11 @@ class PhysicsEngine:
     
     def solver(self, state, ti, tf, step):
         
-        num_steps = max(int(abs(tf-ti) / step), 2)
         sol0 = solve_ivp(
             fun=self.accel,
             t_span=(ti, tf),
             y0=state,
-            t_eval=np.linspace(ti, tf, num_steps),
+            t_eval=np.linspace(ti, tf, step),
             method='DOP853',
             rtol=1e-10,
             atol=1e-10,
@@ -49,25 +48,9 @@ class PhysicsEngine:
     def add_impulse_(self, solution, ti, tf, dV, step):
         
         state_burn = solution[:, -1].copy()
-        
-        r = state_burn[:self.dim]
-        v = state_burn[-self.dim:]
-
-        r_hat = r / np.linalg.norm(r)
-        v_hat = v / np.linalg.norm(v)
-        
-        r_3D = np.append(r, 0) if self.dim == 2 else r
-        v_3D = np.append(v, 0) if self.dim == 2 else r
-        
-        h_3D = np.cross(r_3D, v_3D)
-        n_hat_3D = h_3D / np.linalg.norm(h_3D)
-        n_hat = n_hat_3D[:self.dim]
-
-        dV_t = dV[0]
-        dV_r = dV[1]
-        dV_n = dV[2]
-
-        state_burn[-self.dim:] += (dV_t * v_hat) + (dV_r * r_hat) + (dV_n * n_hat)
+        state_burn[-self.dim] += dV[0] if state_burn[-self.dim] > 0 else -dV[0]
+        state_burn[-self.dim+1] += dV[1] if state_burn[-self.dim+1] > 0 else -dV[1]
+        state_burn[-self.dim+2] += dV[2] if state_burn[-self.dim+2] > 0 else -dV[2]
 
         solN = self.solver(state_burn, ti, tf, step)
         
