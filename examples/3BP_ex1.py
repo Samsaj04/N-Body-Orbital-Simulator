@@ -11,7 +11,6 @@ def main():
     m2 = 4e24
     m3 = 3e24
 
-    
     b1 = Body(
         position=np.array([-15000.0, 0.0]),
         velocity=np.array([0.0, -1.5]),
@@ -37,7 +36,6 @@ def main():
         G=G,
         ti=0,
         tf=1e6/2,
-        step=50,
         impulse=[] 
     )
 
@@ -51,7 +49,6 @@ def main():
     )
 
     viz.animate()
-
 
 if __name__ == "__main__":
     main()

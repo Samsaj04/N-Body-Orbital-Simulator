@@ -11,7 +11,7 @@ mu = G * earth_mass     # km^3 / s^2
 # Orbit Radius
 R_earth = 6371      # km
 r1 = R_earth + 300  # km
-r2 = R_earth + 4000 # km
+r2 = R_earth + 3629 # km
 
 # Hohmann Transfer Data
 V_r1 = hm.V_orbit(r1, r1, mu)
@@ -24,8 +24,8 @@ def main():
     earth = Body(position=np.array([0.0, 0.0]), velocity=np.array([0.0, 0.0]),  mass=earth_mass)
     sat = Body(  position=np.array([r1, 0.0]),  velocity=np.array([0.0, V_r1]), mass=1) 
 
-    impulse0 = Propulsion(tf=T0,             dVx=dV1, dVy=0.0, dVz=0.0)
-    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=dV2, dVy=0.0, dVz=0.0)
+    impulse0 = Propulsion(tf=T0,             dVx=0.0, dVy=dV1, dVz=0.0)
+    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
     
     bodies = [earth, sat]
     impulses = [impulse0, impulse1]
@@ -35,7 +35,6 @@ def main():
         G=G,
         ti=0,
         tf=T_tot*1.5,
-        step=20,        # Number of frames per --X-- seconds of simulation.
         impulse=impulses)
 
     orbits = controller.run_solution()
@@ -44,7 +43,7 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=5
+        speed=10
     )
 
     viz.animate()
