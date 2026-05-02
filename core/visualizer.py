@@ -54,7 +54,7 @@ class Visualizer:
         else:
             ax.set_box_aspect(1)
 
-        ax.set_aspect('equal')
+        ax.axis('equal')
         plt.grid()
         plt.legend()
         
