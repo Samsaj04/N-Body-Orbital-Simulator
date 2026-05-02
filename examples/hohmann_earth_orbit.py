@@ -47,7 +47,7 @@ def main():
     )
 
     viz.animate()
-    viz.export_animation("hohmann_transfer.gif")
+    #viz.export_animation("hohmann_transfer.gif")
     
 if __name__ == "__main__":
     main()

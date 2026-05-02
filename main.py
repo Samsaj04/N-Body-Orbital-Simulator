@@ -40,7 +40,7 @@ def main():
         speed=12)
 
     viz.animate()
-    viz.export_animation("chaotic_3BP.gif")
+    #viz.export_animation("chaotic_3BP.gif")
     
 if __name__ == "__main__":
     main()
