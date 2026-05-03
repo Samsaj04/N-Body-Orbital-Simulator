@@ -126,7 +126,3 @@ python main.py
 
 - Maintained by: Samuel Jiménez Arroyave
 - Contributions are welcome! Please submit pull requests or open issues for suggestions.
-
----
-
-*This project is open source and welcomes community contributions.*
