@@ -18,7 +18,7 @@ def main():
         mass=m2)
     
     B3 = Body(
-        position=np.array([0.0, 0.0, 0.0]), 
+        position=np.array([0.0, 0.0, 0.0]),
         velocity=np.array([-0.93240737, -0.86473146, 0.0]),  
         mass=m3)
     

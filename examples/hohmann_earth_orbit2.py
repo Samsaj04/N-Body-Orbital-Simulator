@@ -11,12 +11,16 @@ mu = G * earth_mass     # km^3 / s^2
 # Orbit Radius
 R_earth = 6371      # km
 r1 = R_earth + 300  # km
-r2 = R_earth + 3629 # km
+a1 = 15000          # km
+
+r2 = R_earth + 30000 # km
+a2 = 22500      # km
+
 
 # Hohmann Transfer Data
-V_r1 = hm.V_orbit(r1, r1, mu)
-dV1, dV2, T_trans = hm.circular_HT(r1, r2, mu)
-T0, T2 = hm.T_imp(r1, r2, mu)  # R1 & R2 Orbit Period
+V_r1 = hm.V_orbit(r1, a1, mu)
+dV1, dV2, T_trans = hm.elliptic_HT(r1, a1, r2, a2, mu)
+T0, T2 = hm.T_imp(a1, a2, mu)  # R1 & R2 Orbit Period
 
 T_tot = T0 + T_trans/2 + T2
 
@@ -47,7 +51,6 @@ def main():
     )
 
     viz.animate()
-    #viz.export_animation("hohmann_transfer.gif")
     
 if __name__ == "__main__":
     main()
