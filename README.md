@@ -4,6 +4,11 @@
 
 **N-Body Orbital Simulator** is a Python-based tool for simulating and visualizing the motion of multiple celestial bodies under mutual gravitational attraction. It supports impulsive maneuvers (propulsion events) and provides animated visualizations of orbital trajectories in 2D or 3D.
 
+<p align="center">
+  <img src="assets/hohmann_transfer.gif" width="600">
+  <img src="assets/chaotic_3BP.gif" width="400">
+</p>
+
 ## Key Features
 
 - Simulate gravitational interactions between any number of bodies
