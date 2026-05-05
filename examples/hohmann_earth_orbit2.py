@@ -2,7 +2,7 @@ import numpy as np
 from core.entities import Body, Propulsion
 from core.simulation_controller import SimulationController
 from core.visualizer import Visualizer
-import mission_design.hohmann as hm
+import mission_design.coplanar_maneuvers as hm
 
 G = 6.6743e-20          # km^3 / kg / s^2
 earth_mass = 5.972e24   # kg
@@ -16,11 +16,10 @@ a1 = 15000          # km
 r2 = R_earth + 30000 # km
 a2 = 22500      # km
 
-
 # Hohmann Transfer Data
 V_r1 = hm.V_orbit(r1, a1, mu)
 dV1, dV2, T_trans = hm.elliptic_HT(r1, a1, r2, a2, mu)
-T0, T2 = hm.T_imp(a1, a2, mu)  # R1 & R2 Orbit Period
+T0, T2 = hm.T_hohmann(a1, a2, mu)  # R1 & R2 Orbit Period
 
 T_tot = T0 + T_trans/2 + T2
 
@@ -47,8 +46,7 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=20
-    )
+        speed=20)
 
     viz.animate()
     
