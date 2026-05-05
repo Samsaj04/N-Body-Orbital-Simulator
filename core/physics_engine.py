@@ -8,9 +8,6 @@ class PhysicsEngine:
         self.masses = masses
         self.dim = dim
         self.N = len(masses)
-
-    def Fij(self, mi, mj, ri, rj):
-        return self.G * (mi*mj)/(np.linalg.norm(rj - ri)**3) * (rj - ri)
     
     def accel(self, t, S):
         
@@ -21,15 +18,11 @@ class PhysicsEngine:
         vel = S_og[1]
 
         for i in range(self.N):
-            mi = self.masses[i]
-            pi = pos[i]
             for j in range(self.N):
                 if j != i:
-                    Pitt[i] += (self.Fij(mi, self.masses[j], pi, pos[j]))
+                    Pitt[i] += self.G * self.masses[j]/(np.linalg.norm(pos[j] - pos[i])**3) * (pos[j] - pos[i])
                 else:
                     continue
-            Pitt[i] /= self.masses[i]
-            
         return np.array([vel, Pitt]).ravel()
     
     def solver(self, state, ti, tf, step):
