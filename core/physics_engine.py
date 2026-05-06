@@ -10,7 +10,6 @@ class PhysicsEngine:
         self.N = len(masses)
     
     def accel(self, t, S):
-        
         Pitt = np.zeros((self.N, self.dim))
         S_og = S.reshape((2, self.N, self.dim))
         
@@ -26,7 +25,6 @@ class PhysicsEngine:
         return np.array([vel, Pitt]).ravel()
     
     def solver(self, state, ti, tf, step):
-        
         sol0 = solve_ivp(
             fun=self.accel,
             t_span=(ti, tf),
@@ -43,7 +41,8 @@ class PhysicsEngine:
         state_burn = solution[:, -1].copy()
         state_burn[-self.dim] += dV[0] if state_burn[-self.dim] > 0 else -dV[0]
         state_burn[-self.dim+1] += dV[1] if state_burn[-self.dim+1] > 0 else -dV[1]
-        state_burn[-self.dim+2] += dV[2] if state_burn[-self.dim+2] > 0 else -dV[2]
+        if self.dim == 3:
+            state_burn[-self.dim+2] += dV[2] if state_burn[-self.dim+2] > 0 else -dV[2]
 
         solN = self.solver(state_burn, ti, tf, step)
         
