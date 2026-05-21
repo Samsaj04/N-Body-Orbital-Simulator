@@ -16,6 +16,10 @@
 - Visualize orbits and maneuvers with Matplotlib animations
 - Supports both 2D and 3D simulations
 - Customizable animation options (trail, speed, centering, relative mass display)
+- Includes orbital maneuver utilities for:
+  - Coplanar Hohmann transfers
+  - Hyperbolic capture calculations for interplanetary missions
+
 
 ## Getting Started
 
@@ -65,7 +69,7 @@ python main.py
      - `G`: Gravitational constant
      - `ti`: Initial time
      - `tf`: Final time
-     - `fps`: Animation frame rate (affects simulation resolution)
+     - `steps`: Total number of integration steps used across the complete simulation
      - `impulse`: List of all `Propulsion` events (optional)
    - Example:
      ```python
@@ -74,7 +78,7 @@ python main.py
          G=G,
          ti=0,
          tf=10000,
-         fps=120,
+         steps=10000,
          impulse=[impulse]
      )
      ```
@@ -119,7 +123,7 @@ python main.py
      ```
 
 ## Support & Documentation
-
+ 
 - For questions or issues, please open an issue in this repository.
 
 ## Maintainers & Contributions
