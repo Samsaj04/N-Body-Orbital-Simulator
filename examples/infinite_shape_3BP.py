@@ -1,5 +1,5 @@
 import numpy as np
-from core.entities import Body, Propulsion
+from core.entities import Body
 from core.simulation_controller import SimulationController
 from core.visualizer import Visualizer
 
@@ -29,7 +29,7 @@ def main():
         G=G,
         ti=0,
         tf=40,
-        fps=120)
+        step=10000)
 
     orbits = controller.run_solution()
     

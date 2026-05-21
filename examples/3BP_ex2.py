@@ -7,6 +7,7 @@ m1, m2, m3 = 1.0, 1.0, 1.0
 G = 1
 
 def main():
+    
     B1 = Body(
         position=np.array([0.97000436, -0.24308753, 0.0]), 
         velocity=np.array([0.466203685, 0.43236573, 0.0]),  
@@ -29,7 +30,7 @@ def main():
         G=G,
         ti=0,
         tf=22,
-        fps=120)
+        step=10000)
 
     orbits = controller.run_solution()
     
@@ -37,10 +38,9 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=12)
+        speed=35)
 
     viz.animate()
-    #viz.export_animation("chaotic_3BP.gif")
     
 if __name__ == "__main__":
     main()

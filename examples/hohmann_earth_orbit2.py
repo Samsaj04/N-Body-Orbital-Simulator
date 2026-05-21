@@ -38,6 +38,7 @@ def main():
         G=G,
         ti=0,
         tf=T_tot*1.5,
+        step=1000,
         impulse=impulses)
 
     orbits = controller.run_solution()
@@ -46,7 +47,7 @@ def main():
         bodies=bodies,
         trajectories=orbits,
         follow=np.inf,
-        speed=20)
+        speed=2)
 
     viz.animate()
     

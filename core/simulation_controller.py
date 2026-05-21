@@ -2,12 +2,14 @@ import numpy as np
 from .physics_engine import PhysicsEngine
 
 class SimulationController:
-    def __init__(self, bodies, G, ti, tf, fps=120, impulse = []):
+    def __init__(self, bodies, G, ti, tf, step, impulse = []):
         self.bodies = bodies
         self.G = G
         self.ti = ti
         self.tf = tf
-        self.fps = fps
+        self.step = step
+        self.dt = self.tf/self.step
+        
         self.impulse = impulse
         
         self.N = len(self.bodies)
@@ -21,30 +23,25 @@ class SimulationController:
         ]).ravel()
         
     def num_steps_(self, ti, tf):
-        return int((tf-ti)*self.fps)
+        return int(np.ceil((tf-ti)/self.dt))
         
-    def run_solution(self):
-        ft = 1
-        if self.num_steps_(self.ti, self.tf) > 10000:
-            ft = self.num_steps_(self.ti, self.tf)/10000
-        
+    def run_solution(self):        
         if not self.impulse:
-            sol0 = self.engine.solver(self.initial_conditions, self.ti, self.tf, int(self.num_steps_(self.ti, self.tf)/ft))
+            sol0 = self.engine.solver(self.initial_conditions, self.ti, self.tf, self.num_steps_(self.ti, self.tf))
             y_tot = sol0.y
         else:
-            sol0 = self.engine.solver(self.initial_conditions, self.ti, self.impulse[0].tf, int(self.num_steps_(self.ti, self.impulse[0].tf)/ft))
+            sol0 = self.engine.solver(self.initial_conditions, self.ti, self.impulse[0].tf, self.num_steps_(self.ti, self.impulse[0].tf))
             y_tot = sol0.y
-            
             imp_tf = np.concat(([pulse.tf for pulse in self.impulse], [self.tf]), axis=0)
 
             for pulse in range(len(self.impulse)):
                 dV = [self.impulse[pulse].dVx, self.impulse[pulse].dVy, self.impulse[pulse].dVz]
-                sol_n = self.engine.add_impulse_(y_tot, imp_tf[pulse], imp_tf[pulse+1], dV, int(self.num_steps_(imp_tf[pulse], imp_tf[pulse+1])/ft))
+                sol_n = self.engine.add_impulse_(y_tot, imp_tf[pulse], imp_tf[pulse+1], dV, self.num_steps_(imp_tf[pulse], imp_tf[pulse+1]))
                 y_tot = sol_n
-
+                
         Pi_sol = []
         for i in range(self.N):
             body_coords = y_tot[i*self.dim : i*self.dim + self.dim]
             Pi_sol.append(body_coords)
-            
+        self.y_tot = y_tot
         return Pi_sol

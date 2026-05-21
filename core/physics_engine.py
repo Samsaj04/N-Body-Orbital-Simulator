@@ -35,7 +35,7 @@ class PhysicsEngine:
             atol=1e-10,
             dense_output=True)
         return sol0
-
+    
     def add_impulse_(self, solution, ti, tf, dV, step):
         
         state_burn = solution[:, -1].copy()
