@@ -2,7 +2,8 @@ import numpy as np
 from core.entities import Body, Propulsion
 from core.simulation_controller import SimulationController
 from core.visualizer import Visualizer
-import mission_design.coplanar_maneuvers as hm
+import mission_design.orbit_transfers as hm
+import mission_design.coplanar_maneuvers as md
 
 G = 6.6743e-20          # km^3 / kg / s^2
 earth_mass = 5.972e24   # kg
@@ -11,24 +12,16 @@ mu = G * earth_mass     # km^3 / s^2
 # Orbit Radius
 R_earth = 6371      # km
 r1 = R_earth + 300  # km
-r2 = R_earth + 3629 # km
+r2 = R_earth + 8000 # km
 
-# Hohmann Transfer Data
 V_r1 = hm.V_orbit(r1, r1, mu)
-dV1, dV2, T_trans = hm.circular_HT(r1, r2, mu)
-T0, T2 = hm.T_hohmann(r1, r2, mu)  # R1 & R2 Orbit Period
-
-T_tot = T0 + T_trans/2 + T2
+impulse, T_tot = md.hohmann_transfer(r1, r2, mu)
 
 def main():
     earth = Body(position=np.array([0.0, 0.0]), velocity=np.array([0.0, 0.0]),  mass=earth_mass)
-    sat = Body(  position=np.array([r1, 0.0]),  velocity=np.array([0.0, V_r1]), mass=1) 
-
-    impulse0 = Propulsion(tf=T0,             dVx=0.0, dVy=dV1, dVz=0.0)
-    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
+    sat = Body(  position=np.array([r1, 0.0]),  velocity=np.array([0.0, V_r1]), mass=1)
     
     bodies = [earth, sat]
-    impulses = [impulse0, impulse1]
     
     controller = SimulationController(
         bodies=bodies,
@@ -36,7 +29,7 @@ def main():
         ti=0,
         tf=T_tot*1.5,
         step=10000,
-        impulse=impulses)
+        impulse=impulse)
 
     orbits = controller.run_solution()
     

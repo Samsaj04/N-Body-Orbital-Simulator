@@ -1,47 +1,45 @@
-import numpy as np
+from core.entities import Propulsion
+import mission_design.orbit_transfers as hm
+import mission_design.hyp_capture as hp
+     
+def hohmann_transfer(r1, r2, mu):
+    
+    dV1, dV2, T_trans = hm.circular_HT(r1, r2, mu)
+    T0, T2 = hm.T_hohmann(r1, r2, mu)
+    
+    T_tot = T0 + T_trans/2 + T2
+    impulse0 = Propulsion(tf=T0,             dVx=0.0, dVy=dV1, dVz=0.0)
+    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
+    
+    return [impulse0, impulse1], T_tot
 
-# Orbit Velocity
-def V_orbit(rad, a, mu):
-    try:
-        v = np.sqrt(mu * (2/rad - 1/a))
-        return v
-    except:
-        raise ValueError("Radius cannot exceed twice the semi-major axis (r > 2a) for orbital velocity.")
+def elliptic_hohmann_transfer(r1, a1, r2, a2, mu):
 
-# Orbit Period
-def T(a, mu):
-    return 2*np.pi*np.sqrt(a**3 / mu)
+    dV1, dV2, T_trans = hm.elliptic_HT(r1, a1, r2, a2, mu)
+    T0, T2 = hm.T_hohmann(a1, a2, mu)
 
-def T_hohmann(r1, r2, mu):
-    return T(r1, mu), T(r2, mu)
+    T_tot = T0 + T_trans/2 + T2
+    impulse0 = Propulsion(tf=T0,             dVx=0.0, dVy=dV1, dVz=0.0)
+    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
+    
+    return [impulse0, impulse1], T_tot
 
-def T_biell(r1, r2, r3, mu):
-    T0, _ = T_hohmann(r1, r2, mu)
-    _, T2 = T_hohmann(r2, r3, mu)
-    return T0, T2
+def bielliptic_transfer(Ra, Rb, Rc, mu):
 
-#================================================
+    dV1, dV2, T_t1, T_t2 = hm.bi_elliptic(Ra, Rb, Rc, mu)
+    T0, T2 = hm.T_biell(Ra, Rb, Rc, mu)
+    T_tot = T0 + T_t1/2 + T_t2/2 + T2
 
-def circular_HT(r1, r2, mu):
-    hT = h_T(r1, r2, mu)
-    dV1 = (hT - h(r1, 0, mu))/r1
-    dV2 = (h(r2, 0, mu) - hT)/r2
-    return dV1, dV2, T((r1+r2)/2, mu)
+    impulse0 = Propulsion(tf=T0,          dVx=0.0, dVy=dV1, dVz=0.0)
+    impulse1 = Propulsion(tf=T0 + T_t1/2, dVx=0.0, dVy=dV2, dVz=0.0)
+    
+    return [impulse0, impulse1], T_tot
 
-def elliptic_HT(r1, a1, r2, a2, mu):
-    a_T = (r1+r2)/2
-    dVA = V_orbit(r1, a_T, mu) - V_orbit(r1, a1, mu)
-    dVB = V_orbit(r2, a2, mu) - V_orbit(r2, a_T, mu)
-    return dVA, dVB, T(a_T, mu)
+def hyperbolic_capture(R0, V0, mu):
 
-def bi_elliptic(r1, r2, r3, mu):
-    h2T = h_T(r1, r2, mu) 
-    dV1 = (h2T - h(r1, 0, mu))/r1
-    dV2 = (h_T(r2, r3, mu) - h2T)/r2
-    return dV1, dV2, T((r1+r2)/2, mu), T((r2+r3)/2, mu)
-
-def h(a, e, mu):
-    return np.sqrt(mu*a*(1-e**2))
-
-def h_T(r1, r2, mu):
-    return np.sqrt(2*mu*r1*r2/(r1+r2))
+    dV = hp.dV_hyper(R0, V0, mu)
+    T = hp.T_hyper(0, R0, V0, mu)
+    
+    impulse0 = Propulsion(tf=T, dVx=dV[0], dVy=dV[1], dVz=dV[2])
+    
+    return impulse0, T
