@@ -40,8 +40,14 @@ class SimulationController:
                 y_tot = sol_n
                 
         Pi_sol = []
+        Vi_sol = []
+        offs = self.N*self.dim
+        
         for i in range(self.N):
-            body_coords = y_tot[i*self.dim : i*self.dim + self.dim]
+            body_coords = y_tot[i*self.dim : self.dim*(i+1)]
             Pi_sol.append(body_coords)
+            
+            body_speeds = y_tot[i*self.dim + offs : self.dim*(i+1) + offs]
+            Vi_sol.append(body_speeds)
         self.y_tot = y_tot
-        return Pi_sol
+        return Pi_sol, Vi_sol
