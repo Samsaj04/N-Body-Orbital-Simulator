@@ -8,8 +8,8 @@ def hohmann_transfer(r1, r2, mu):
     T0, T2 = hm.T_hohmann(r1, r2, mu)
     
     T_tot = T0 + T_trans/2 + T2
-    impulse0 = Propulsion(tf=T0,             dVx=0.0, dVy=dV1, dVz=0.0)
-    impulse1 = Propulsion(tf=T0 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
+    impulse0 = Propulsion(tf=0.001,             dVx=0.0, dVy=dV1, dVz=0.0)
+    impulse1 = Propulsion(tf=0.001 + T_trans/2, dVx=0.0, dVy=dV2, dVz=0.0)
     
     return [impulse0, impulse1], T_tot
 
