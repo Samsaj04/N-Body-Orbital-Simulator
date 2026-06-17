@@ -38,7 +38,7 @@ def main():
 
     viz = Visualizer(
         bodies=bodies,
-        trajectories=orbits,
+        orbit=orbits,
         follow=np.inf,
         speed=35)
 
