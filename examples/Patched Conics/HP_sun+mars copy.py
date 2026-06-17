@@ -2,7 +2,6 @@ import numpy as np
 from core.entities import Body, Propulsion
 from core.simulation_controller import SimulationController
 from core.visualizer import Visualizer
-import mission_design.lambert_solver as lp
 import mission_design.orbit_transfers as ot
 import mission_design.coplanar_maneuvers as cp
 
