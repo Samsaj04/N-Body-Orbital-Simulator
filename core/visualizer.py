@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
     
 class Visualizer:
-    def __init__(self, bodies, trajectories, follow, speed, centered=False, rel_mass=False):
+    def __init__(self, bodies, orbit, follow, speed, centered=False, rel_mass=False):
         self.bodies = bodies
-        self.trajectories = trajectories
+        self.orbit = orbit
+        self.trajectories = self.orbit[0]
         self.dim = len(self.bodies[0].position)
         self.follow = follow
         self.speed = speed
