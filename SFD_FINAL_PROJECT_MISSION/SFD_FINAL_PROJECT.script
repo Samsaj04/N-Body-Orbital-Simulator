@@ -1,3 +1,11 @@
+%General Mission Analysis Tool(GMAT) Script
+%Created: 2026-06-19 13:44:23
+
+
+%----------------------------------------
+%---------- Spacecraft
+%----------------------------------------
+
 Create Spacecraft Spacecraft;
 Spacecraft.DateFormat = UTCGregorian;
 Spacecraft.Epoch = '10 Dec 2026 08:08:00.000';
@@ -45,6 +53,10 @@ Spacecraft.AttitudeRateDisplayStateType = 'AngularVelocity';
 Spacecraft.AttitudeCoordinateSystem = EarthMJ2000Eq;
 Spacecraft.EulerAngleSequence = '321';
 
+%----------------------------------------
+%---------- ForceModels
+%----------------------------------------
+
 Create ForceModel Propagator1_ForceModel;
 Propagator1_ForceModel.CentralBody = Earth;
 Propagator1_ForceModel.PrimaryBodies = {Earth};
@@ -74,6 +86,10 @@ MarsFM.SRP = Off;
 MarsFM.RelativisticCorrection = Off;
 MarsFM.ErrorControl = RSSStep;
 
+%----------------------------------------
+%---------- Propagators
+%----------------------------------------
+
 Create Propagator Propagator_sun;
 Propagator_sun.FM = SunFM;
 Propagator_sun.Type = PrinceDormand78;
@@ -93,6 +109,10 @@ Propagator_mars.MinStep = 0.001;
 Propagator_mars.MaxStep = 86400;
 Propagator_mars.MaxStepAttempts = 50;
 Propagator_mars.StopIfAccuracyIsViolated = true;
+
+%----------------------------------------
+%---------- Burns
+%----------------------------------------
 
 Create ImpulsiveBurn ImpulsiveBurn1;
 ImpulsiveBurn1.CoordinateSystem = Local;
@@ -116,6 +136,10 @@ ImpulsiveBurn2.DecrementMass = false;
 ImpulsiveBurn2.Isp = 300;
 ImpulsiveBurn2.GravitationalAccel = 9.81;
 
+%----------------------------------------
+%---------- Coordinate Systems
+%----------------------------------------
+
 Create CoordinateSystem Sun_CS;
 Sun_CS.Origin = Sun;
 Sun_CS.Axes = MJ2000Ec;
@@ -124,6 +148,10 @@ Create CoordinateSystem Mars_CS;
 Mars_CS.Origin = Mars;
 Mars_CS.Axes = BodyInertial;
 
+%----------------------------------------
+%---------- Solvers
+%----------------------------------------
+
 Create DifferentialCorrector DC1;
 DC1.ShowProgress = true;
 DC1.ReportStyle = Normal;
@@ -131,6 +159,10 @@ DC1.ReportFile = 'Targeter_Logs.txt';
 DC1.MaximumIterations = 25;
 DC1.DerivativeMethod = ForwardDifference;
 DC1.Algorithm = NewtonRaphson;
+
+%----------------------------------------
+%---------- Subscribers
+%----------------------------------------
 
 Create OpenFramesInterface OrbitView1;
 OrbitView1.SolverIterations = Current;
@@ -240,6 +272,10 @@ ReportFile1.ColumnWidth = 23;
 ReportFile1.WriteReport = true;
 ReportFile1.AppendToExistingFile = false;
 
+%----------------------------------------
+%---------- User Objects
+%----------------------------------------
+
 Create OpenFramesView CoordinateSystemView1;
 CoordinateSystemView1.ViewFrame = CoordinateSystem;
 CoordinateSystemView1.ViewTrajectory = Off;
@@ -320,6 +356,12 @@ OrbitView1_View.DefaultCenter = [ 0 0 0 ];
 OrbitView1_View.DefaultUp = [ 0 0 1 ];
 OrbitView1_View.SetCurrentLocation = Off;
 OrbitView1_View.FOVy = 45;
+
+
+%----------------------------------------
+%---------- Mission Sequence
+%----------------------------------------
+
 
 BeginMissionSequence;
 
