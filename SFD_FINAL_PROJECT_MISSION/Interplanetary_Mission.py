@@ -73,8 +73,6 @@ R_sc = R_earth + (dir_pos * r_pe) # Spacecraft's Position Relative to the Sun
 dir_v = np.array([-np.sin(theta_periapsis), np.cos(theta_periapsis)]) #Unitary Vector of SC Velocity
 V_sc = V_earth + (dir_v * v_leo) # Spacecraft's Velocity Relative to the Sun
 
-
-
 def main():
     sun = Body(position=np.array([0.0, 0.0]), velocity=np.array([0.0, 0.0]), mass=sun_mass)
     earth = Body(position=R_earth, velocity=V_earth, mass=earth_mass)
@@ -99,7 +97,8 @@ def main():
 
     orbits = controller0.run_solution()
 
-    t_SOI = controller0.find_time_pos(orbits, 3, 2, SOI_mars)
+    # Time of arrival to Mars' Sphere of Influence
+    _ = controller0.find_time_pos(orbits, 3, 2, SOI_mars) # Placed just to Print the SOI's Log Data
     
     # Time of Periapsis, Velocity change
     t_burn, dV_vec = controller0.find_periapsis(orbits, 3, 2, MU_mars) 
