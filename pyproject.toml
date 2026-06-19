@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orbitalsim"
+version = "0.1.0"
+description = "Astrodynamics and mission design simulator"
+
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "numba"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*", "mission_design*"]
