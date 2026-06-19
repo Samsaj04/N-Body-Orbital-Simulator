@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
     
 class Visualizer:
-    def __init__(self, bodies, orbit, follow, speed, centered=False, rel_mass=False):
+    def __init__(self, bodies, orbit, speed, follow=np.inf, centered=False, rel_mass=False):
         self.bodies = bodies
         self.orbit = orbit
         self.trajectories = self.orbit[0]
@@ -23,7 +23,8 @@ class Visualizer:
         else:
             fig, ax = plt.subplots()
         
-        colors = ["blue", "green", "red", "cyan", "magenta","yellow", "black", "white"]
+        colors = ["blue", "green", "red", "purple", "magenta","yellow", "black", "white"]
+        line = ["-", "-", "-", "--"]
         
         self.ax = ax
         self.b_plt = []
@@ -34,11 +35,12 @@ class Visualizer:
         
         for i in range(self.N):
             c = i % len(colors)
+            l = i % len(line)
             
             if self.rel_mass:
                 pan_de_canela = masitas[i]/max(masitas) * 10
                 
-            body_plt, = ax.plot(*self.trajectories[i], colors[c], label=f"Body {i+1}", linewidth=1)
+            body_plt, = ax.plot(*self.trajectories[i], colors[c], linestyle=line[l],label=f"Body {i+1}", linewidth=1)
             
             dot = [posi[-1] for posi in self.trajectories[i]]
             body_dot, = ax.plot(*dot, 'o', color=colors[c], markersize=pan_de_canela)
@@ -79,7 +81,6 @@ class Visualizer:
             self.ax.set_xlim(CG[0] - puta, CG[0] + puta)
             self.ax.set_ylim(CG[1] - puta, CG[1] + puta)
              
-        
         if display:
             plt.show()
         return fig

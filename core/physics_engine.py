@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from numba import njit
 
+# Using numba to optimize the acceleration function
 @njit
 def accel_numba(S, N, dim, G, masses):
     Pitt = np.zeros((int(N), int(dim)))
@@ -40,6 +41,7 @@ class PhysicsEngine:
             atol=1e-8)
         return sol0
     
+    # Adds a delta V and unifies the new solution with the older solution
     def add_impulse_(self, solution, ti, tf, dV, step):
         
         state_burn = solution[:, -1].copy()

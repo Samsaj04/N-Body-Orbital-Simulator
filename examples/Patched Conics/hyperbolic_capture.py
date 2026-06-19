@@ -1,8 +1,7 @@
 import numpy as np
-from core.entities import Body, Propulsion
+from core.entities import Body
 from core.simulation_controller import SimulationController
 from core.visualizer import Visualizer
-from core.mission_report import MissionReport
 import mission_design.hyp_capture as hp
 import mission_design.coplanar_maneuvers as md
 
