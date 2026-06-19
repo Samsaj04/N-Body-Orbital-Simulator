@@ -189,6 +189,7 @@ class MissionReport:
         if plot:
             self.plot_energy()
             self.plot_epsilon()
+            self.plot_rel_distance(-1, -2)
 
     # Plots the relative distance between the spacecraft and a selected Body through time
     def plot_rel_distance(self, idx_sc, idx_target):
