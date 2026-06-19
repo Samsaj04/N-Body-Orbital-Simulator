@@ -12,13 +12,16 @@
 ## Key Features
 
 - Simulate gravitational interactions between any number of bodies
+- Numba-optimized physics engine for fast N-body numerical integrations
 - Add impulsive maneuvers (velocity changes) at specified times
 - Visualize orbits and maneuvers with Matplotlib animations
 - Supports both 2D and 3D simulations
 - Customizable animation options (trail, speed, centering, relative mass display)
+- Comprehensive mission reporting tools (energy analysis, relative distance tracking, maneuver summaries)
 - Includes orbital maneuver utilities for:
   - Coplanar Hohmann transfers
   - Hyperbolic capture calculations for interplanetary missions
+  - Periapsis detection for maneuver targeting
 
 
 ## Getting Started
@@ -32,15 +35,15 @@
    ```
 2. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -e .
    ```
 
 ### Usage
 
-All simulation setup and execution is done in `main.py`. To run the simulator, simply execute:
+All simulation setup and execution is done in `example.py`. To run the simulator, simply execute:
 
 ```bash
-python main.py
+python example.py
 ```
 
 #### How to Use
@@ -57,6 +60,7 @@ python main.py
 2. **Define Propulsion events (optional)**
    - Use `Propulsion` to specify maneuvers (impulses) for the spacecraft.
    - Attributes: `tf` (time of maneuver), `dVx`, `dVy`, `dVz` (velocity changes in each component).
+   - Important: Note that a positive dV value indicates an increase in velocity magnitude, whereas a negative dV indicates a decrease in magnitude, rather than a simple algebraic vector addition to the coordinate axes.
    - Example:
      ```python
      impulse = Propulsion(tf=1000, dVx=0.5, dVy=0.0, dVz=0.0)
@@ -69,7 +73,7 @@ python main.py
      - `G`: Gravitational constant
      - `ti`: Initial time
      - `tf`: Final time
-     - `steps`: Total number of integration steps used across the complete simulation
+     - `step`: Total number of integration steps used across the complete simulation
      - `impulse`: List of all `Propulsion` events (optional)
    - Example:
      ```python
@@ -78,7 +82,7 @@ python main.py
          G=G,
          ti=0,
          tf=10000,
-         steps=10000,
+         step=10000,
          impulse=[impulse]
      )
      ```
@@ -90,13 +94,20 @@ python main.py
      orbits = controller.run_solution()
      ```
 
-5. **Visualization**
+5. **Mission Reporting**
+   - Create a `MissionReport` object to analyze simulation data, evaluate orbital energy, and plot relative distances:
+     ```python
+     report = MissionReport(simulation=controller, orbit=orbits)
+     report.mission_log(plot=True)
+     ```
+
+6. **Visualization**
    - Create a `Visualizer` object to plot or animate the mission:
      - `bodies`: List of bodies
-     - `trajectories`: Output from `run_solution()`
-     - `follow`: Controls the trail length (higher = longer trail)
+     - `orbit`: Output from `run_solution()`
      - `speed`: Animation speed
-     - `centered`: If `True`, the plot zooms to follow the bodies; if `False`, shows the full domain
+     - `follow`: Controls the trail length (higher = longer trail)
+     - `centered`: If `True`, the plot is centered on the system barycenter; if `False`, shows the full domain
      - `rel_mass`: If `True`, marker size is proportional to mass
    - Example:
      ```python
@@ -129,4 +140,4 @@ python main.py
 ## Maintainers & Contributions
 
 - Maintained by: Samuel Jiménez Arroyave
-- Contributions are welcome! Please submit pull requests or open issues for suggestions.
+- Please submit pull requests or open issues for suggestions.
